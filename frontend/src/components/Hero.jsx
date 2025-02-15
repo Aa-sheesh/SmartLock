@@ -9,7 +9,7 @@ function Hero() {
           Next-Gen Intrusion Detection, Powered by Decentralization
         </div>
         <div className="p-4 text-xl ">
-          Stay Secure, Stay Decentralized Traditional security systems are
+          Traditional security systems are
           vulnerable to single points of failure, making them easy targets for
           cyber threats. We’re changing that. Our decentralized Intrusion
           Detection System (IDS) ensures real-time threat monitoring, detection,
@@ -21,21 +21,21 @@ function Hero() {
           </span>
           <ul className="mt-2">
             <li>
-              ✅ Decentralized & Resilient – No single point of attack or
-              failure.
+              ✅ <span className="font-bold">Decentralized & Resilient</span> – No single point of
+              attack or failure.
             </li>{" "}
             <li>
               {" "}
-              ✅ Real-Time Threat Intelligence – AI-powered monitoring across
+              ✅ <span className="font-bold">Real-Time Threat Intelligence</span> – AI-powered monitoring across
               distributed nodes.{" "}
             </li>
             <li>
-              ✅ Privacy-Preserving Security – Your data stays secure and
+              ✅ <span className="font-bold">Privacy-Preserving Security</span> – Your data stays secure and
               anonymous.
             </li>
             <li>
               {" "}
-              ✅ Scalable & Adaptive – Works seamlessly across networks, cloud,
+              ✅ <span className="font-bold">Scalable & Adaptive</span> – Works seamlessly across networks, cloud,
               and IoT.
             </li>{" "}
           </ul>
@@ -44,29 +44,33 @@ function Hero() {
             <br />{" "}
             <ul className="mt-2">
               <li>
-                🔹 Decentralized Nodes – Every node contributes to security
+                🔹 <span className="font-bold">Decentralized Nodes </span> – Every node contributes to security
                 intelligence.{" "}
               </li>
               <li>
-                🔹 AI & ML-Powered Detection – Advanced algorithms spot
+                🔹 <span className="font-bold">AI & ML-Powered Detection </span> – Advanced algorithms spot
                 anomalies in real time.
               </li>{" "}
               <li>
-                🔹 Blockchain-Backed Integrity – Tamper-proof security logs
+                🔹 <span className="font-bold">Blockchain-Backed Integrity </span>– Tamper-proof security logs
                 ensure transparency.
               </li>
             </ul>
           </div>
           <br />
-          <span className="flex justify-center font-bold italic ">
-          Join the Future of Cybersecurity. Protect your network with the power
-          of decentralization. Experience the next evolution in IDS today.
-          <br />
+          <span className="flex justify-center italic ">
+            Join the Future of Cybersecurity. Protect your network with the
+            power of decentralization. Experience the next evolution in IDS
+            today.
+            <br />
           </span>
+          <div className="flex justify-center font-bold text-2xl mt-1">
+          Stay Secure, Stay Decentralized!
+          </div>
           <Link to="/register">
             <div className="flex justify-center">
-              <button className="font-bold flex justify-center cursor-pointer rounded bg-amber-600 hover:bg-amber-700 p-3 m-5">
-                🚀Get Started Now!
+              <button className="font-bold flex justify-center cursor-pointer rounded blur-sm bg-amber-600 hover:blur-none  p-3 m-5">
+                🚀 Get Started Now!
               </button>
             </div>
           </Link>

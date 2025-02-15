@@ -1,7 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useUserStore } from "../stores/useUserStore";
 
 function Navbar() {
+  const { user,logout } = useUserStore();
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+    
+  };
   return (
     <>
       <div className="  flex justify-between  p-4">
@@ -22,20 +29,28 @@ function Navbar() {
             <div className="text-3xl font-bold">SmartLock</div>
           </div>
         </Link>
-        <div id="nav-right">
-          <div className="">
-            <Link to="/login">
-              <button className="text-xl cursor-pointer bg-green-600 rounded-md px-3 py-2 mr-3 hover:bg-green-700 ">
-                Login
-              </button>
-            </Link>
-            <Link to="/register">
-              <button className="text-xl cursor-pointer bg-red-700 hover:bg-red-800 rounded-md px-3 py-2">
-                Register
-              </button>
-            </Link>
+        {!user ? (
+          <div id="nav-right">
+            <div className="">
+              <Link to="/login">
+                <button className="text-xl cursor-pointer  rounded-md px-3 py-2 mr-3 hover:bg-green-700 ">
+                  Login
+                </button>
+              </Link>
+              <Link to="/register">
+                <button className="text-xl cursor-pointer  hover:bg-red-700 rounded-md px-3 py-2">
+                  Register
+                </button>
+              </Link>
+            </div>
           </div>
-        </div>
+        ) : (
+          <Link to="/logout">
+            <button onClick={handleLogout} className="text-xl cursor-pointer  hover:bg-red-800 rounded-md px-3 py-2">
+              Logout
+            </button>
+          </Link>
+        )}
       </div>
     </>
   );
