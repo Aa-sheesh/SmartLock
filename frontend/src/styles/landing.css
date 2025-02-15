@@ -1,0 +1,24 @@
+ul{
+    list-style-type: none;
+    /* margin: 0; */
+    /* padding: 0; */
+    overflow: hidden;
+    /* background-color: #333; */
+    background: rgba(255, 255, 255, 0.1); /* Transparent White */
+    backdrop-filter: blur(20px); /* Blur effect */
+    -webkit-backdrop-filter: blur(20px); /* Safari support */
+    border-radius: 15px; /* Rounded corners */
+    /* border: 1px solid rgba(255, 255, 255, 0.2);  */
+    /* Subtle border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Soft shadow */
+    padding: 10px;
+    color: white; /* Text color */
+    /* text-align: center; */
+    /* width: 300px; */
+    /* margin: 50px auto; */
+
+}
+li{
+    /* padding-inline: 15px; */
+    padding: 4px 16px;
+}

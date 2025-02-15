@@ -1,12 +1,29 @@
-*{
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+@import "tailwindcss";
 
+body {
+  background-color: #0a0f24;
+  background-image: radial-gradient(rgba(0, 255, 170, 0.2) 1px, transparent 1px), 
+                    radial-gradient(rgba(0, 255, 170, 0.15) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  animation: gridMove 6s linear infinite;
+  text-shadow: #0a0f24;
+  color:white
 }
 
-body{
+@keyframes gridMove {
+  from {
+      background-position: 0 0, 25px 25px;
+  }
+  to {
+      background-position: -50px -50px, -25px -25px;
+  }
+}
+
+
+/* body{
   font-family: 'Roboto', sans-serif;
   background-color: #252525;
+  padding:10px;
   color: #fff;
-}
+} */
