@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function Hero() {
   return (
     <>
-      <div className="flex flex-col  px-10  ">
+      <div className="flex flex-col  px-10   ">
         <div className="text-3xl flex justify-center font-extrabold mt-10 relative  after:content-[''] after:absolute after:left-70 after:bottom-0 after:w-0 after:h-[2px] after:bg-amber-200 after:transition-all after:duration-300 hover:after:w-220 ">
           Next-Gen Intrusion Detection, Powered by Decentralization
         </div>

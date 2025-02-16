@@ -7,8 +7,8 @@ import Navbar from "../components/Navbar";
 function Landing() {
   return (
     <>
-      <Navbar/>
-      <Hero />
+        <Navbar />
+        <Hero />
     </>
   );
 }
