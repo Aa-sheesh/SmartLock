@@ -1,6 +1,8 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 // import Footer from '../components/Footer';
+import { capitalize } from "lodash";
+import { useUserStore } from "../stores/useUserStore";
 
 // Demo data for users and system logs
 const demoUsers = [
@@ -31,15 +33,25 @@ const demoLogs = [
 ];
 
 function Admin() {
+  const { user } = useUserStore();
+  const demoUserData = {
+    fullName: capitalize(user.fullName),
+    email: user.email,
+    role: capitalize(user.role),
+  };
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-800 to-gray-900/10 text-gray-100 flex flex-col">
       <Navbar />
-
       {/* Main Content */}
       <main className="flex-grow container mx-auto p-4">
-        {/* Dashboard Header */}
+        {/* Welcome Section */}
         <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">Admin Dashboard</h2>
+          <h2 className="text-2xl font-bold mb-2">
+            Admin Dashboard : {demoUserData.fullName} 
+          </h2>
+          <p className="text-gray-400 font-mono">
+            Role: {demoUserData.role} • Email: {demoUserData.email}
+          </p>
           <p className="text-gray-400 font-mono">
             Manage users and review system logs.
           </p>

@@ -1,13 +1,11 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import { useUserStore } from '../stores/useUserStore';
+import {capitalize} from 'lodash';
 // import Footer from '../components/Footer';
 
 // Demo data for the user and security alerts
-const demoUserData = {
-  fullName: "Cyber Guardian",
-  email: "guardian@cybersecurity.com",
-  role: "Admin",
-};
+
 
 const demoAlerts = [
   {
@@ -32,6 +30,12 @@ const demoAlerts = [
 ];
 
 function User() {
+  const { user } = useUserStore();
+  const demoUserData = {
+    fullName: capitalize(user.fullName),
+    email: user.email,
+    role: capitalize(user.role),
+  };
   
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-800 to-gray-900/10 text-gray-100 flex flex-col">
