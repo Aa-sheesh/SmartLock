@@ -11,10 +11,11 @@ import { Toaster } from "react-hot-toast";
 import { useUserStore } from "./stores/useUserStore";
 import User from "./pages/User.jsx";
 import Loading from "./components/Loading.jsx";
+import Admin from "./pages/Admin.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
-  const { user, checkAuth,checkingAuth } = useUserStore();
+  const { user, checkAuth, checkingAuth } = useUserStore();
   // const checkingAuth=true;
   useEffect(() => {
     checkAuth();
@@ -22,12 +23,28 @@ function App() {
 
   if (checkingAuth) return <Loading />;
 
+  // console.log(user.role)
   return (
     <>
       <Routes>
-        <Route path="/" element={!user ? <Landing /> : <User />} />
-        <Route path="/register" element={!user ? <Register /> : <User />} />
-        <Route path="/login" element={!user ? <Login /> : <User />} />
+        <Route
+          path="/"
+          element={
+            !user ? <Landing /> : user.role === "user" ? <User /> : <Admin />
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            !user ? <Register /> : user.role === "user" ? <User /> : <Admin />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            !user ? <Login /> : user.role === "user" ? <User /> : <Admin />
+          }
+        />
       </Routes>
       <Toaster />
     </>
