@@ -63,16 +63,12 @@ SmartLock's core components include:
    ```
 2. **Backend Setup**:
     ```bash
-    Copy
-    Edit
     cd backend
     npm install
     ```
 
 3. **Frontend Setup**:
     ```bash
-    Copy
-    Edit
     cd ../frontend
     npm install
     ```
@@ -81,8 +77,6 @@ SmartLock's core components include:
     Create a .env file in the backend directory with your configuration variables. For example:
 
     ```.env
-        Copy
-        Edit
         # backend/.env
         MONGO_URI=your_mongodb_connection_string
         JWT_SECRET=your_jwt_secret
@@ -95,16 +89,12 @@ SmartLock's core components include:
     1. **Start the Backend**:
 
         ```bash
-            Copy
-            Edit
             cd backend
             npm start
         ```
     2. **Start the Frontend**:
 
         ```bash
-            Copy
-            Edit
             cd ../frontend
             npm start
         ```
@@ -122,21 +112,15 @@ Contributions are welcome! Please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix:
-    ```bash
-        Copy
-        Edit
+    ```bas
         git checkout -b feature/your-feature-name
     ```
 3. Commit your changes:
-    ```bash
-        Copy
-        Edit
+    ```bas
         git commit -am 'Add new feature'
     ```
 4. Push to your branch:
-    ```bash
-        Copy
-        Edit
+    ```bas
         git push origin feature/your-feature-name
     ```
 5. Open a pull request and describe your changes.
