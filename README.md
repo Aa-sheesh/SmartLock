@@ -58,7 +58,7 @@ SmartLock's core components include:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/smartlock.git
+   git clone https://github.com/Aa-sheesh/smartlock.git
    cd smartlock
    ```
 2. **Backend Setup**:
