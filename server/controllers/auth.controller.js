@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils.js";
+import Intrusion from "../models/intrusion.model.js";
+
 
 export const signup = async (req, res) => {
   // res.send('Signup Route Called');
@@ -50,6 +52,12 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
+      await Intrusion.create({
+        ipAddress: req.ip,
+        userAgent: req.headers["user-agent"],
+        eventType: "failed_login",
+        additionalInfo: "Login attempt with non-existent email",
+      });
       return res.status(400).json({ message: "Invalid Credentials" });
     }
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
