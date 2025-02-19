@@ -1,15 +1,14 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
-import RegisterForm from '../components/RegisterForm'
+import React from "react";
+import Navbar from "../components/Navbar";
+import RegisterForm from "../components/RegisterForm";
 
 function Register() {
   return (
     <>
-
-        <Navbar />
-        <RegisterForm />
+      <Navbar />
+      <RegisterForm />
     </>
-  )
+  );
 }
 
-export default Register
+export default Register;

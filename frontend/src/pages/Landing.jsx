@@ -1,14 +1,13 @@
 import React from "react";
-// import Navbar from "../components/Navbar";
-import "../styles/landing.css";
-import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import "../styles/landing.css";
 
 function Landing() {
   return (
     <>
-        <Navbar />
-        <Hero />
+      <Navbar />
+      <Hero />
     </>
   );
 }

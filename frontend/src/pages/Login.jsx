@@ -5,8 +5,8 @@ import LoginForm from "../components/LoginForm";
 function Login() {
   return (
     <>
-        <Navbar />
-        <LoginForm />
+      <Navbar />
+      <LoginForm />
     </>
   );
 }

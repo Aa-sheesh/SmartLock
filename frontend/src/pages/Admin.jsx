@@ -1,36 +1,9 @@
-import React from "react";
+// src/pages/Admin.jsx
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-// import Footer from '../components/Footer';
+import axios from "../lib/axios";
 import { capitalize } from "lodash";
 import { useUserStore } from "../stores/useUserStore";
-
-// Demo data for users and system logs
-const demoUsers = [
-  {
-    id: 1,
-    fullName: "Cyber Guardian",
-    email: "guardian@cybersecurity.com",
-    role: "Admin",
-  },
-  {
-    id: 2,
-    fullName: "Data Defender",
-    email: "defender@cybersecurity.com",
-    role: "User",
-  },
-  {
-    id: 3,
-    fullName: "Network Ninja",
-    email: "ninja@cybersecurity.com",
-    role: "User",
-  },
-];
-
-const demoLogs = [
-  { id: 1, message: 'User "Data Defender" logged in.', time: "10 minutes ago" },
-  { id: 2, message: "Firewall configuration updated.", time: "20 minutes ago" },
-  { id: 3, message: "Malware scan completed on server 3.", time: "1 hour ago" },
-];
 
 function Admin() {
   const { user } = useUserStore();
@@ -39,15 +12,54 @@ function Admin() {
     email: user.email,
     role: capitalize(user.role),
   };
+
+  // State for intrusion alerts
+  const [alerts, setAlerts] = useState([]);
+  const [loadingAlerts, setLoadingAlerts] = useState(true);
+  const [errorAlerts, setErrorAlerts] = useState("");
+
+  // State for aggregated security metrics
+  const [metrics, setMetrics] = useState(null);
+  const [loadingMetrics, setLoadingMetrics] = useState(true);
+  const [errorMetrics, setErrorMetrics] = useState("");
+
+  useEffect(() => {
+    const fetchAlerts = async () => {
+      try {
+        const response = await axios.get("/api/alerts");
+        setAlerts(response.data);
+      } catch (err) {
+        console.error("Error fetching alerts:", err);
+        setErrorAlerts("Failed to load alerts.");
+      } finally {
+        setLoadingAlerts(false);
+      }
+    };
+
+    const fetchMetrics = async () => {
+      try {
+        const response = await axios.get("/api/metrics");
+        setMetrics(response.data);
+      } catch (err) {
+        console.error("Error fetching metrics:", err);
+        setErrorMetrics("Failed to load metrics.");
+      } finally {
+        setLoadingMetrics(false);
+      }
+    };
+
+    fetchAlerts();
+    fetchMetrics();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-800 to-gray-900/10 text-gray-100 flex flex-col">
       <Navbar />
-      {/* Main Content */}
       <main className="flex-grow container mx-auto p-4">
-        {/* Welcome Section */}
+        {/* User Details */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-2">
-            Admin Dashboard : {demoUserData.fullName} 
+            Admin Dashboard: {demoUserData.fullName}
           </h2>
           <p className="text-gray-400 font-mono">
             Role: {demoUserData.role} • Email: {demoUserData.email}
@@ -57,70 +69,82 @@ function Admin() {
           </p>
         </section>
 
-        {/* User Management Section */}
+        {/* Security Metrics Section */}
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">User Management</h2>
-          <div className="overflow-x-auto">
+          <h2 className="text-xl font-semibold mb-4">Security Metrics</h2>
+          {loadingMetrics ? (
+            <p>Loading metrics...</p>
+          ) : errorMetrics ? (
+            <p>{errorMetrics}</p>
+          ) : metrics ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-gray-800 p-4 rounded shadow border-t-4 border-blue-500">
+                <h3 className="text-lg font-bold">Threats Blocked</h3>
+                <p className="text-3xl text-blue-400 font-bold mt-2">
+                  {metrics.threatsBlocked}
+                </p>
+              </div>
+              <div className="bg-gray-800 p-4 rounded shadow border-t-4 border-blue-500">
+                <h3 className="text-lg font-bold">Firewall Hits</h3>
+                <p className="text-3xl text-blue-400 font-bold mt-2">
+                  {metrics.firewallHits}
+                </p>
+              </div>
+              <div className="bg-gray-800 p-4 rounded shadow border-t-4 border-blue-500">
+                <h3 className="text-lg font-bold">Intrusions Detected</h3>
+                <p className="text-3xl text-blue-400 font-bold mt-2">
+                  {metrics.intrusionsDetected}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <p>No metrics available.</p>
+          )}
+        </section>
+
+        {/* Intrusion Alerts Section */}
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Intrusion Alerts</h2>
+          {loadingAlerts ? (
+            <p>Loading alerts...</p>
+          ) : errorAlerts ? (
+            <p>{errorAlerts}</p>
+          ) : alerts.length === 0 ? (
+            <p>No alerts available.</p>
+          ) : (
             <table className="min-w-full bg-gray-800 rounded shadow">
               <thead>
                 <tr>
-                  <th className="px-4 py-2 border-b border-gray-700">ID</th>
-                  <th className="px-4 py-2 border-b border-gray-700">Name</th>
-                  <th className="px-4 py-2 border-b border-gray-700">Email</th>
-                  <th className="px-4 py-2 border-b border-gray-700">Role</th>
-                  <th className="px-4 py-2 border-b border-gray-700">
-                    Actions
-                  </th>
+                  <th className="px-4 py-2 border-b border-gray-700">IP Address</th>
+                  <th className="px-4 py-2 border-b border-gray-700">User Agent</th>
+                  <th className="px-4 py-2 border-b border-gray-700">Event Type</th>
+                  <th className="px-4 py-2 border-b border-gray-700">Additional Info</th>
+                  <th className="px-4 py-2 border-b border-gray-700">Date</th>
+                  <th className="px-4 py-2 border-b border-gray-700">Geolocation</th>
                 </tr>
               </thead>
               <tbody>
-                {demoUsers.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-gray-700 transition-colors"
-                  >
+                {alerts.map((log) => (
+                  <tr key={log._id} className="hover:bg-gray-700 transition-colors">
+                    <td className="px-4 py-2 border-b border-gray-700">{log.ipAddress}</td>
+                    <td className="px-4 py-2 border-b border-gray-700">{log.userAgent}</td>
+                    <td className="px-4 py-2 border-b border-gray-700">{log.eventType}</td>
+                    <td className="px-4 py-2 border-b border-gray-700">{log.additionalInfo}</td>
                     <td className="px-4 py-2 border-b border-gray-700">
-                      {user.id}
+                      {new Date(log.attemptedAt).toLocaleString()}
                     </td>
                     <td className="px-4 py-2 border-b border-gray-700">
-                      {user.fullName}
-                    </td>
-                    <td className="px-4 py-2 border-b border-gray-700">
-                      {user.email}
-                    </td>
-                    <td className="px-4 py-2 border-b border-gray-700">
-                      {user.role}
-                    </td>
-                    <td className="px-4 py-2 border-b border-gray-700">
-                      <button className="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-sm rounded">
-                        Edit
-                      </button>
-                      <button className="ml-2 px-2 py-1 bg-red-600 hover:bg-red-700 text-sm rounded">
-                        Delete
-                      </button>
+                      {log.geo && log.geo.city
+                        ? `${log.geo.city}, ${log.geo.region}, ${log.geo.country}`
+                        : "N/A"}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        </section>
-
-        {/* System Logs Section */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">System Logs</h2>
-          <div className="bg-gray-800 p-4 rounded shadow">
-            {demoLogs.map((log) => (
-              <div key={log.id} className="mb-2 border-b border-gray-700 pb-2">
-                <p className="text-gray-300">{log.message}</p>
-                <p className="text-sm text-gray-500">{log.time}</p>
-              </div>
-            ))}
-          </div>
+          )}
         </section>
       </main>
-
-      {/* <Footer /> */}
     </div>
   );
 }

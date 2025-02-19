@@ -1,33 +1,9 @@
-import React from 'react';
-import Navbar from '../components/Navbar';
-import { useUserStore } from '../stores/useUserStore';
-import {capitalize} from 'lodash';
-// import Footer from '../components/Footer';
-
-// Demo data for the user and security alerts
-
-
-const demoAlerts = [
-  {
-    id: 1,
-    title: "Unauthorized Login Attempt",
-    description:
-      "Multiple failed login attempts detected from IP 192.168.1.101.",
-    time: "2 minutes ago",
-  },
-  {
-    id: 2,
-    title: "Malware Detected",
-    description: "Suspicious file activity found on server 3.",
-    time: "15 minutes ago",
-  },
-  {
-    id: 3,
-    title: "Data Breach Alert",
-    description: "Unusual data transfer volume detected.",
-    time: "1 hour ago",
-  },
-];
+// src/pages/User.jsx
+import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import { useUserStore } from "../stores/useUserStore";
+import axios from "../lib/axios";
+import { capitalize } from "lodash";
 
 function User() {
   const { user } = useUserStore();
@@ -36,11 +12,33 @@ function User() {
     email: user.email,
     role: capitalize(user.role),
   };
-  
+
+  // State for dynamic recent activity data
+  const [activities, setActivities] = useState([]);
+  const [loadingActivities, setLoadingActivities] = useState(true);
+  const [errorActivities, setErrorActivities] = useState("");
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await axios.get("/api/user/activity");
+        setActivities(response.data);
+      } catch (error) {
+        console.error("Error fetching recent activity:", error);
+        setErrorActivities("Failed to load recent activity.");
+        // Optionally, you can set demo data here:
+        // setActivities([{ id: 1, message: "Logged in successfully.", timestamp: Date.now() }]);
+      } finally {
+        setLoadingActivities(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-800 to-gray-900/10 text-gray-100 flex flex-col">
       <Navbar />
-      {/* Main Content */}
       <main className="flex-grow container mx-auto p-4">
         {/* Welcome Section */}
         <section className="mb-8">
@@ -51,41 +49,42 @@ function User() {
             Role: {demoUserData.role} • Email: {demoUserData.email}
           </p>
         </section>
-
-        {/* Security Alerts */}
+        
+        {/* Account Status Section */}
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Recent Security Alerts</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {demoAlerts.map((alert) => (
-              <div
-                key={alert.id}
-                className="bg-gray-800 p-4 rounded border-l-4 border-red-500 shadow hover:shadow-lg transition-shadow"
-              >
-                <h3 className="text-lg font-bold text-red-400">{alert.title}</h3>
-                <p className="text-gray-400 mt-2">{alert.description}</p>
-                <p className="text-sm text-gray-600 mt-2">{alert.time}</p>
-              </div>
-            ))}
-          </div>
+          <h2 className="text-xl font-semibold mb-4">Account Status</h2>
+          <p className="mb-2">
+            Your account is operating normally. You have not exceeded your allowed request limits.
+          </p>
+          <p>
+            For detailed security insights, please contact your administrator.
+          </p>
         </section>
 
-        {/* Security Metrics */}
+        {/* Recent Activity Section (Dynamic Data) */}
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Security Metrics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-gray-800 p-4 rounded shadow border-t-4 border-blue-500">
-              <h3 className="text-lg font-bold">Threats Blocked</h3>
-              <p className="text-3xl text-blue-400 font-bold mt-2">152</p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded shadow border-t-4 border-blue-500">
-              <h3 className="text-lg font-bold">Firewall Hits</h3>
-              <p className="text-3xl text-blue-400 font-bold mt-2">98</p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded shadow border-t-4 border-blue-500">
-              <h3 className="text-lg font-bold">Intrusions Detected</h3>
-              <p className="text-3xl text-blue-400 font-bold mt-2">23</p>
-            </div>
-          </div>
+          <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+          {loadingActivities ? (
+            <p>Loading recent activity...</p>
+          ) : errorActivities ? (
+            <p className="text-red-400">{errorActivities}</p>
+          ) : activities.length === 0 ? (
+            <p>No recent activity available.</p>
+          ) : (
+            <ul className="space-y-2">
+              {activities.map((activity) => (
+                <li
+                  key={activity.id || activity._id}
+                  className="bg-gray-800 p-4 rounded shadow"
+                >
+                  <p className="text-gray-300">{activity.message}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(activity.timestamp).toLocaleString()}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       </main>
     </div>
