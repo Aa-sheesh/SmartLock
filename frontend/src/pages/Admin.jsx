@@ -1,12 +1,11 @@
-// src/pages/Admin.jsx
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import axios from "../lib/axios";
 import { capitalize } from "lodash";
 import { useUserStore } from "../stores/useUserStore";
+import { toast } from "react-hot-toast";
 
 function Admin() {
-  const { user } = useUserStore();
+  const { user, fetchAlerts, fetchMetrics } = useUserStore();
   const demoUserData = {
     fullName: capitalize(user.fullName),
     email: user.email,
@@ -24,33 +23,33 @@ function Admin() {
   const [errorMetrics, setErrorMetrics] = useState("");
 
   useEffect(() => {
-    const fetchAlerts = async () => {
+    const getAlerts = async () => {
       try {
-        const response = await axios.get("/api/alerts");
-        setAlerts(response.data);
+        const alertsData = await fetchAlerts();
+        setAlerts(alertsData);
       } catch (err) {
-        console.error("Error fetching alerts:", err);
         setErrorAlerts("Failed to load alerts.");
+        console.error("Error fetching alerts:", err);
       } finally {
         setLoadingAlerts(false);
       }
     };
 
-    const fetchMetrics = async () => {
+    const getMetrics = async () => {
       try {
-        const response = await axios.get("/api/metrics");
-        setMetrics(response.data);
+        const metricsData = await fetchMetrics();
+        setMetrics(metricsData);
       } catch (err) {
-        console.error("Error fetching metrics:", err);
         setErrorMetrics("Failed to load metrics.");
+        console.error("Error fetching metrics:", err);
       } finally {
         setLoadingMetrics(false);
       }
     };
 
-    fetchAlerts();
-    fetchMetrics();
-  }, []);
+    getAlerts();
+    getMetrics();
+  }, [fetchAlerts, fetchMetrics]);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-800 to-gray-900/10 text-gray-100 flex flex-col">
